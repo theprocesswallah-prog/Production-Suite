@@ -10,29 +10,37 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Embedded styling helper for Dashboard modules layout */
+        /* Modern Premium Grid for 6 refined KPI Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
+        /* Apple/Stripe-inspired KPI Cards (18px Card Radius) */
         .kpi-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 1.25rem;
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+            border-color: #cbd5e1;
         }
 
         .kpi-data {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: 0.35rem;
         }
 
         .kpi-title {
@@ -40,39 +48,41 @@
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .kpi-value {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 26px;
+            font-weight: 800;
             color: var(--text-main);
+            letter-spacing: -0.5px;
         }
 
         .kpi-icon-box {
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
         }
 
         .kpi-trend {
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 2px;
             margin-top: 0.25rem;
         }
 
-        /* Complex Section blocks layouts */
+        /* Layout panels grids */
         .dashboard-sections-wrap {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         @media (max-width: 1024px) {
@@ -81,11 +91,12 @@
             }
         }
 
+        /* Elegant Panel Cards (18px Radius) */
         .panel-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
+            border-radius: var(--card-radius);
+            padding: 1.75rem;
             box-shadow: var(--shadow-sm);
         }
 
@@ -93,34 +104,36 @@
             font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.75rem;
         }
 
-        /* Activity Logs lists representation */
+        /* Linear Changelog-style professional Activities Feed */
         .activity-feed-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .feed-item {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
             align-items: flex-start;
-            font-size: 13px;
+            font-size: 13.5px;
+            line-height: 1.4;
         }
 
         .feed-time {
             font-size: 11px;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
             white-space: nowrap;
-            width: 50px;
+            width: 55px;
+            margin-top: 2px;
         }
 
         .feed-dot {
@@ -128,34 +141,36 @@
             height: 8px;
             border-radius: 50%;
             background-color: var(--primary);
-            margin-top: 5px;
+            margin-top: 6px;
             flex-shrink: 0;
+            box-shadow: 0 0 0 3px #f8fafc;
         }
 
-        /* Timeline and Order progress visual map */
+        /* Sleek dynamic layout progress timelines */
         .progress-pipeline {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
         .pipeline-row {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
 
         .pipeline-info {
             display: flex;
             justify-content: space-between;
-            font-size: 12.5px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
         .progress-bar-container {
-            height: 8px;
+            height: 6px;
             background-color: #f1f5f9;
-            border-radius: 4px;
+            border-radius: 9999px;
             overflow: hidden;
             width: 100%;
         }
@@ -163,17 +178,18 @@
         .progress-bar-fill {
             height: 100%;
             background-color: var(--primary);
-            border-radius: 4px;
+            border-radius: 9999px;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 </head>
 <body class="light-workspace">
     <div class="app-container">
-        <!-- Dynamic Sidebar injected here -->
+        <!-- Dynamic Sidebar with Accordion links -->
         <aside id="app-sidebar"></aside>
 
         <div class="main-layout">
-            <!-- Dynamic Header with migrated profile card -->
+            <!-- Dynamic Frosted Glass Header -->
             <header id="app-header"></header>
 
             <main class="workspace-content">
@@ -186,7 +202,7 @@
                     </div>
                 </div>
 
-                <!-- 6 Professional KPI Cards -->
+                <!-- 6 Highly Refined KPI Cards -->
                 <div class="dashboard-grid">
                     <div class="kpi-card">
                         <div class="kpi-data">
@@ -255,9 +271,9 @@
                     </div>
                 </div>
 
-                <!-- Main dashboard sections -->
+                <!-- Main dashboard analytics panels -->
                 <div class="dashboard-sections-wrap">
-                    <!-- Section A: Production Summary & Progress Timeline -->
+                    <!-- Section A: Production Summary Graph -->
                     <div class="panel-card">
                         <div class="panel-title">
                             <i data-lucide="factory" style="color: var(--primary);"></i> Current Shift Output Summary
@@ -291,7 +307,7 @@
                         </div>
                     </div>
 
-                    <!-- Section B: Recent activity lists feed & Order Status -->
+                    <!-- Section B: Live Event Logs & Quality Yields -->
                     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                         <div class="panel-card">
                             <div class="panel-title">
@@ -301,17 +317,17 @@
                                 <div class="feed-item">
                                     <span class="feed-time">14:02 PM</span>
                                     <span class="feed-dot" style="background-color: var(--success);"></span>
-                                    <span>QA Passed for Transformer HT-229. Unit dispatched to Yard.</span>
+                                    <span style="color: var(--text-main);">QA Passed for Transformer HT-229. Unit dispatched to Yard.</span>
                                 </div>
                                 <div class="feed-item">
                                     <span class="feed-time">13:15 PM</span>
                                     <span class="feed-dot" style="background-color: var(--danger);"></span>
-                                    <span>Winding Machine CNC-02 raised Concern: Raw copper wire snapping. Status marked Blocked.</span>
+                                    <span style="color: var(--text-main);">Winding Machine CNC-02 raised Concern: Raw copper wire snapping. Status marked Blocked.</span>
                                 </div>
                                 <div class="feed-item">
                                     <span class="feed-time">11:40 AM</span>
                                     <span class="feed-dot" style="background-color: var(--info);"></span>
-                                    <span>Batch #LT-891 materials issued and allocated.</span>
+                                    <span style="color: var(--text-main);">Batch #LT-891 materials issued and allocated.</span>
                                 </div>
                             </div>
                         </div>
@@ -328,7 +344,7 @@
                 </div>
             </main>
 
-            <!-- Dynamic Footer injected here -->
+            <!-- Dynamic Subtle Footer (Dynamically injected bottom-right) -->
             <footer id="app-footer"></footer>
         </div>
     </div>
@@ -338,7 +354,7 @@
     <script src="js/layout.js"></script>
     <script src="js/dashboard.js"></script>
     <script>
-        // Production Yield Data Analytics Chart (Line Graph representation)
+        // Line chart styling enhancements (Stripe design color sets)
         const yieldCtx = document.getElementById('outputYieldChart').getContext('2d');
         new Chart(yieldCtx, {
             type: 'line',
@@ -348,31 +364,36 @@
                     label: 'Actual Output Yield (Units)',
                     data: [15, 38, 55, 85, 110, 120],
                     borderColor: '#f97316',
-                    backgroundColor: 'rgba(249, 115, 22, 0.05)',
+                    backgroundColor: 'rgba(249, 115, 22, 0.03)',
                     fill: true,
-                    tension: 0.25,
-                    borderWidth: 2.5
+                    tension: 0.3,
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 6
                 }, {
                     label: 'Target Yield Target (Units)',
                     data: [20, 40, 60, 80, 100, 120],
-                    borderColor: '#94a3b8',
-                    borderDash: [4, 4],
+                    borderColor: '#cbd5e1',
+                    borderDash: [5, 5],
                     fill: false,
-                    tension: 0
+                    tension: 0,
+                    pointRadius: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 11 } } } },
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 11, weight: 600 } } } },
                 scales: {
-                    y: { grid: { color: '#f1f5f9' }, ticks: { font: { family: 'Inter', size: 10 } } },
-                    x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } }
+                    y: { grid: { color: '#f1f5f9' }, ticks: { font: { family: 'Inter', size: 10, weight: 500 }, color: '#475569' } },
+                    x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10, weight: 500 }, color: '#475569' } }
                 }
             }
         });
 
-        // Quality Yield Donut Representation
+        // Donut charts yields analytics setup
         const qcCtx = document.getElementById('qualityYieldChart').getContext('2d');
         new Chart(qcCtx, {
             type: 'doughnut',
@@ -380,13 +401,16 @@
                 labels: ['Passed QC', 'Rework Stack', 'Logged Scrap'],
                 datasets: [{
                     data: [94.5, 4.2, 1.3],
-                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 3,
+                    borderColor: '#ffffff'
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { family: 'Inter', size: 11 } } } }
+                plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { family: 'Inter', size: 11, weight: 600 }, color: '#475569' } } },
+                cutout: '70%'
             }
         });
     </script>
