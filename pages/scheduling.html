@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcessWallah - Floor Scheduling</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .gantt-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: white;
+            margin-top: 1rem;
+        }
+        .gantt-header {
+            background-color: #f1f5f9;
+            padding: 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+        .gantt-row {
+            display: contents;
+        }
+        .gantt-machine-label {
+            padding: 1.25rem 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            background: #faf8f6;
+        }
+        .gantt-timeline-track {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px);
+            background-size: 25% 100%;
+        }
+        .gantt-block {
+            background-color: var(--primary-light);
+            color: var(--primary-hover);
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: absolute;
+            top: 20%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gantt-block:hover {
+            box-shadow: var(--shadow-md);
+        }
+    </style>
+</head>
+<body>
 
+    <!-- Unified Dark Sidebar -->
+    <aside>
+        <div class="sidebar-brand">
+            <i class="logo-icon" data-lucide="cog"></i>
+            <span>ProcessWallah</span>
+            <span class="suite-v">V1</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="../index.html" class="sidebar-link"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+            <a href="sales-orders.html" class="sidebar-link"><i data-lucide="shopping-cart"></i>Sales Orders</a>
+            <a href="scheduling.html" class="sidebar-link active"><i data-lucide="calendar"></i>Scheduling</a>
+            <a href="work-orders.html" class="sidebar-link"><i data-lucide="clipboard-list"></i>Work Orders</a>
+            <a href="production.html" class="sidebar-link"><i data-lucide="activity"></i>Production Floor</a>
+            <a href="reports.html" class="sidebar-link"><i data-lucide="bar-chart-2"></i>Reports</a>
+            <a href="masters.html" class="sidebar-link"><i data-lucide="database"></i>Masters</a>
+            <a href="settings.html" class="sidebar-link"><i data-lucide="settings"></i>Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">PW</div>
+                <div class="user-info">
+                    <span class="user-name">Alex Miller</span>
+                    <span class="user-role">Operations Manager</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search orders, materials or metrics...">
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="showToast('Shift Plan Locked for Editing', 'warning')"><i data-lucide="lock"></i></button>
+            </div>
+        </header>
+
+        <div class="workspace-content">
+            <div class="page-title-block">
+                <div>
+                    <h1>Floor Scheduling</h1>
+                    <p>Track dynamic work center utilization timelines across current shifts</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-secondary" onclick="showToast('Re-balancing operations workloads', 'info')">Auto-Optimize Schedule</button>
+                    <button class="btn btn-primary" onclick="showToast('Machine schedule saved and dispatched!', 'success')">Publish Schedule</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-weight: 600; font-size: 0.9rem;">View Timeline:</span>
+                        <div class="filters-left">
+                            <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.8rem; background: var(--primary-light); color: var(--primary);">Shift A (06:00 - 14:00)</button>
+                            <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.8rem;" onclick="showToast('Viewing Shift B...', 'info')">Shift B (14:00 - 22:00)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gantt-grid">
+                    <!-- Gantt Columns Headers -->
+                    <div class="gantt-header">Work Center / Machine</div>
+                    <div class="gantt-header" style="display: flex; justify-content: space-between; padding: 1rem;">
+                        <span>06:00</span>
+                        <span>08:00</span>
+                        <span>10:00</span>
+                        <span>12:00</span>
+                        <span>14:00</span>
+                    </div>
+
+                    <!-- Row CNC Lathe -->
+                    <div class="gantt-row">
+                        <div class="gantt-machine-label"><i data-lucide="cpu" style="width:16px;"></i> CNC Lathe 01</div>
+                        <div class="gantt-timeline-track">
+                            <div class="gantt-block" style="left: 5%; width: 45%;" onclick="showBlockInfo('WO-88741 (Pistons)')">
+                                WO-88741 [Alloy Pistons]
+                            </div>
+                            <div class="gantt-block" style="left: 55%; width: 35%; background: #e0f2fe; border-color:#0284c7; color:#0369a1;" onclick="showBlockInfo('WO-88742 (Seal Rings)')">
+                                WO-88742 [Seal Rings]
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row Milling Station -->
+                    <div class="gantt-row">
+                        <div class="gantt-machine-label"><i data-lucide="wrench" style="width:16px;"></i> Milling Station</div>
+                        <div class="gantt-timeline-track">
+                            <div class="gantt-block" style="left: 15%; width: 55%;" onclick="showBlockInfo('WO-88743 (Milling Phase A)')">
+                                WO-88743 [Alloy Milling Phase A]
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row Assembly Line 1 -->
+                    <div class="gantt-row">
+                        <div class="gantt-machine-label"><i data-lucide="layers" style="width:16px;"></i> Assembly Line 1</div>
+                        <div class="gantt-timeline-track">
+                            <div class="gantt-block" style="left: 40%; width: 50%; background:#d1fae5; border-color:#10b981; color:#065f46;" onclick="showBlockInfo('WO-88744 (Final Assembly)')">
+                                WO-88744 [Piston Sub-Assemblies]
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row QA Station -->
+                    <div class="gantt-row">
+                        <div class="gantt-machine-label"><i data-lucide="search" style="width:16px;"></i> Inspection Lab</div>
+                        <div class="gantt-timeline-track">
+                            <div class="gantt-block" style="left: 10%; width: 25%;" onclick="showBlockInfo('WO-88745 (QA Round)')">
+                                WO-88745 [Calibrations]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script>
+        function showBlockInfo(woId) {
+            showToast(`Operational parameters for ${woId}: Scheduled Cycle Time remains on-track.`, 'info');
+        }
+    </script>
+</body>
+</html>
