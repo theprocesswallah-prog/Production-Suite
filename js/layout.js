@@ -1,30 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Path-depth mapping auto-determination
     const prefix = getPathPrefix();
 
-    // 2. Inject Modular Shell Components
+    // Inject layout parts
     injectSidebar(prefix);
     injectHeader();
     injectFooter();
 
-    // 3. Highlight Dynamic Active Links
+    // Setup active accordion items highlight and expand
     highlightActiveSidebar(prefix);
 
-    // 4. Trigger Lucide Icons
+    // Initial lucide markers triggers
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
 });
 
-// Resilient path-depth selector setup for local & GitHub Pages usage
 function getPathPrefix() {
     const path = window.location.pathname;
-    
-    // Agar path blank hai, index.html hai, ya root levels represent karta hai
     if (path.endsWith('index.html') || path.endsWith('/') || path === '') {
         return '';
     }
-    // Agar page sibling modules directory (/sales/, /production/) ke andur hai
     return '../';
 }
 
@@ -32,81 +27,81 @@ function injectSidebar(prefix) {
     const sidebarContainer = document.getElementById('app-sidebar');
     if (!sidebarContainer) return;
 
-    // Direct redirection paths mapped using detected prefix
     sidebarContainer.innerHTML = `
         <div class="sidebar-brand">
-            <i class="logo-icon" data-lucide="cog" style="animation: spin 10s linear infinite;"></i>
-            <span>ProcessWallah</span>
-            <span class="suite-v">V1</span>
+            <div class="brand-title">
+                <i class="logo-icon" data-lucide="shield"></i>
+                <span>ALFA INTERCONTINENTAL</span>
+            </div>
+            <div class="brand-subtitle">Manufacturing Suite V1</div>
         </div>
+        
         <nav class="sidebar-nav">
+            <!-- Standalone Dashboard -->
             <a href="${prefix}index.html" class="sidebar-link" id="nav-dashboard">
                 <i data-lucide="layout-dashboard"></i>Dashboard
             </a>
             
-            <div class="nav-label">Sales Operations</div>
-            <a href="${prefix}sales/sales-orders.html" class="sidebar-link" id="nav-sales-orders">
-                <i data-lucide="shopping-cart"></i>Sales Orders
-            </a>
-            <a href="${prefix}sales/scheduling.html" class="sidebar-link" id="nav-scheduling">
-                <i data-lucide="calendar"></i>Scheduling
-            </a>
-            <a href="${prefix}sales/work-orders.html" class="sidebar-link" id="nav-work-orders">
-                <i data-lucide="clipboard-list"></i>Work Orders
-            </a>
+            <!-- Accordion Group: Sales -->
+            <div class="accordion-group">
+                <div class="accordion-header" id="header-sales" onclick="toggleAccordion('sales')">
+                    <span class="accordion-header-left">
+                        <i data-lucide="shopping-cart"></i>Sales Operations
+                    </span>
+                    <i class="chevron-icon" data-lucide="chevron-down"></i>
+                </div>
+                <div class="accordion-content" id="accordion-sales">
+                    <a href="${prefix}sales/sales-orders.html" class="sidebar-link" id="nav-sales-orders">Sales Orders</a>
+                    <a href="${prefix}sales/scheduling.html" class="sidebar-link" id="nav-scheduling">Scheduling</a>
+                    <a href="${prefix}sales/work-orders.html" class="sidebar-link" id="nav-work-orders">Work Orders</a>
+                </div>
+            </div>
 
-            <div class="nav-label">Manufacturing WIP</div>
-            <a href="${prefix}production/wip.html" class="sidebar-link" id="nav-wip">
-                <i data-lucide="play-circle"></i>Work In Progress
-            </a>
-            <a href="${prefix}production/material-issue.html" class="sidebar-link" id="nav-material-issue">
-                <i data-lucide="package-open"></i>Material Issue
-            </a>
-            <a href="${prefix}production/core-winding.html" class="sidebar-link" id="nav-core-winding">
-                <i data-lucide="rotate-cw"></i>Core Winding
-            </a>
-            <a href="${prefix}production/stacking.html" class="sidebar-link" id="nav-stacking">
-                <i data-lucide="layers"></i>Core Stacking
-            </a>
-            <a href="${prefix}production/assembly.html" class="sidebar-link" id="nav-assembly">
-                <i data-lucide="cpu"></i>Assembly Unit
-            </a>
-            <a href="${prefix}production/internal-qc.html" class="sidebar-link" id="nav-internal-qc">
-                <i data-lucide="shield-check"></i>Internal QC
-            </a>
-            <a href="${prefix}production/ready-dispatch.html" class="sidebar-link" id="nav-ready-dispatch">
-                <i data-lucide="warehouse"></i>Ready Dispatch
-            </a>
-            <a href="${prefix}production/dispatch.html" class="sidebar-link" id="nav-dispatch">
-                <i data-lucide="truck"></i>Final Dispatch
-            </a>
+            <!-- Accordion Group: Production -->
+            <div class="accordion-group">
+                <div class="accordion-header" id="header-production" onclick="toggleAccordion('production')">
+                    <span class="accordion-header-left">
+                        <i data-lucide="activity"></i>Production WIP
+                    </span>
+                    <i class="chevron-icon" data-lucide="chevron-down"></i>
+                </div>
+                <div class="accordion-content" id="accordion-production">
+                    <a href="${prefix}production/wip.html" class="sidebar-link" id="nav-wip">Work In Progress</a>
+                    <a href="${prefix}production/material-issue.html" class="sidebar-link" id="nav-material-issue">Material Issue</a>
+                    <a href="${prefix}production/core-winding.html" class="sidebar-link" id="nav-core-winding">Core Winding</a>
+                    <a href="${prefix}production/stacking.html" class="sidebar-link" id="nav-stacking">Core Stacking</a>
+                    <a href="${prefix}production/assembly.html" class="sidebar-link" id="nav-assembly">Assembly Unit</a>
+                    <a href="${prefix}production/internal-qc.html" class="sidebar-link" id="nav-internal-qc">Internal QC</a>
+                    <a href="${prefix}production/ready-dispatch.html" class="sidebar-link" id="nav-ready-dispatch">Ready Dispatch</a>
+                    <a href="${prefix}production/dispatch.html" class="sidebar-link" id="nav-dispatch">Final Dispatch</a>
+                </div>
+            </div>
 
-            <div class="nav-label">Analytics & Setup</div>
+            <!-- Standalone Reports -->
             <a href="${prefix}reports/reports.html" class="sidebar-link" id="nav-reports">
                 <i data-lucide="bar-chart-3"></i>Reports
             </a>
-            <a href="${prefix}masters/customer-master.html" class="sidebar-link" id="nav-customer-master">
-                <i data-lucide="users"></i>Customer Master
-            </a>
-            <a href="${prefix}masters/product-master.html" class="sidebar-link" id="nav-product-master">
-                <i data-lucide="database"></i>Product Master
-            </a>
-            <a href="${prefix}masters/employee-master.html" class="sidebar-link" id="nav-employee-master">
-                <i data-lucide="user-cog"></i>Employee Master
-            </a>
+
+            <!-- Accordion Group: Masters -->
+            <div class="accordion-group">
+                <div class="accordion-header" id="header-masters" onclick="toggleAccordion('masters')">
+                    <span class="accordion-header-left">
+                        <i data-lucide="database"></i>System Masters
+                    </span>
+                    <i class="chevron-icon" data-lucide="chevron-down"></i>
+                </div>
+                <div class="accordion-content" id="accordion-masters">
+                    <a href="${prefix}masters/customer-master.html" class="sidebar-link" id="nav-customer-master">Customer Master</a>
+                    <a href="${prefix}masters/product-master.html" class="sidebar-link" id="nav-product-master">Product Master</a>
+                    <a href="${prefix}masters/employee-master.html" class="sidebar-link" id="nav-employee-master">Employee Master</a>
+                </div>
+            </div>
+
+            <!-- Standalone Settings -->
             <a href="${prefix}settings/settings.html" class="sidebar-link" id="nav-settings">
                 <i data-lucide="settings"></i>Settings
             </a>
         </nav>
-        <div class="sidebar-footer">
-            <div class="user-profile">
-                <div class="avatar">PW</div>
-                <div class="user-info">
-                    <span class="user-name">Alex Miller</span>
-                    <span class="user-role">Operations Manager</span>
-                </div>
-            </div>
-        </div>
     `;
 }
 
@@ -124,18 +119,31 @@ function injectHeader() {
                 <button class="unit-btn ${activeUnit === 'LT' ? 'active' : ''}" onclick="switchUnit('LT')">LT Unit</button>
             </div>
         </div>
-        <div class="header-actions">
-            <button class="action-btn" onclick="triggerToast('Alarms system active on floor.', 'success')">
-                <i data-lucide="shield-alert" style="color: var(--success)"></i>
+        <div class="header-right">
+            <button class="action-btn" onclick="triggerToast('Alarms system fully operational.', 'success')">
+                <i data-lucide="shield-alert" style="color: var(--success); width: 18px; height: 18px;"></i>
             </button>
-            <button class="action-btn" onclick="triggerToast('Alerts logs up to date.', 'info')">
-                <i data-lucide="bell"></i>
+            <button class="action-btn" style="margin-right: 0.5rem;" onclick="triggerToast('Notifications checked.', 'info')">
+                <i data-lucide="bell" style="width: 18px; height: 18px;"></i>
                 <span class="badge-count">2</span>
             </button>
+            
+            <!-- Shipped Profile Card in Header -->
+            <div class="header-profile-card" onclick="triggerToast('Profile dropdown feature locks in future sprint.', 'info')">
+                <div class="profile-avatar">AM</div>
+                <div class="profile-details">
+                    <span class="profile-name">Alex Miller</span>
+                    <div class="profile-meta">
+                        <span>Ops Manager</span>
+                        <span class="profile-unit-tag">${activeUnit}</span>
+                    </div>
+                </div>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; margin-left: 4px; color: var(--text-muted);"></i>
+            </div>
         </div>
     `;
 
-    // Responsive toggle bindings
+    // Dynamic drawer bindings
     const burger = document.getElementById('nav-hamburger');
     const sidebar = document.getElementById('app-sidebar');
     if (burger && sidebar) {
@@ -155,14 +163,37 @@ function injectFooter() {
     const footerContainer = document.getElementById('app-footer');
     if (footerContainer) {
         footerContainer.innerHTML = `
-            <span>&copy; 2026 ProcessWallah MES Suite V1 • Sibling Depth Normalization Patched</span>
+            <span>Created by ProcessWallah</span>
         `;
+    }
+}
+
+function toggleAccordion(sectionId) {
+    const allContents = document.querySelectorAll('.accordion-content');
+    const allHeaders = document.querySelectorAll('.accordion-header');
+    
+    const targetContent = document.getElementById(`accordion-${sectionId}`);
+    const targetHeader = document.getElementById(`header-${sectionId}`);
+    const isOpen = targetContent.classList.contains('open');
+
+    // Accordion behavior: Close all open accordions first
+    allContents.forEach(c => c.classList.remove('open'));
+    allHeaders.forEach(h => h.classList.remove('open'));
+
+    // Toggle target
+    if (!isOpen) {
+        targetContent.classList.add('open');
+        targetHeader.classList.add('open');
+    }
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
     }
 }
 
 function switchUnit(unit) {
     localStorage.setItem('pw_unit_selected', unit);
-    triggerToast(`Switched active environment successfully to: ${unit} Unit`, 'success');
+    triggerToast(`Active Unit altered directly to: ${unit} Division`, 'success');
     setTimeout(() => {
         window.location.reload();
     }, 300);
@@ -171,26 +202,68 @@ function switchUnit(unit) {
 function highlightActiveSidebar(prefix) {
     const path = window.location.pathname;
     let targetId = "nav-dashboard";
+    let expandSection = null;
 
-    if (path.includes('/sales-orders.html')) targetId = "nav-sales-orders";
-    else if (path.includes('/scheduling.html')) targetId = "nav-scheduling";
-    else if (path.includes('/work-orders.html')) targetId = "nav-work-orders";
-    else if (path.includes('/wip.html')) targetId = "nav-wip";
-    else if (path.includes('/material-issue.html')) targetId = "nav-material-issue";
-    else if (path.includes('/core-winding.html')) targetId = "nav-core-winding";
-    else if (path.includes('/stacking.html')) targetId = "nav-stacking";
-    else if (path.includes('/assembly.html')) targetId = "nav-assembly";
-    else if (path.includes('/internal-qc.html')) targetId = "nav-internal-qc";
-    else if (path.includes('/ready-dispatch.html')) targetId = "nav-ready-dispatch";
-    else if (path.includes('/dispatch.html')) targetId = "nav-dispatch";
-    else if (path.includes('/reports.html')) targetId = "nav-reports";
-    else if (path.includes('/customer-master.html')) targetId = "nav-customer-master";
-    else if (path.includes('/product-master.html')) targetId = "nav-product-master";
-    else if (path.includes('/employee-master.html')) targetId = "nav-employee-master";
-    else if (path.includes('/settings.html')) targetId = "nav-settings";
+    if (path.includes('/sales-orders.html')) {
+        targetId = "nav-sales-orders";
+        expandSection = "sales";
+    } else if (path.includes('/scheduling.html')) {
+        targetId = "nav-scheduling";
+        expandSection = "sales";
+    } else if (path.includes('/work-orders.html')) {
+        targetId = "nav-work-orders";
+        expandSection = "sales";
+    } else if (path.includes('/wip.html')) {
+        targetId = "nav-wip";
+        expandSection = "production";
+    } else if (path.includes('/material-issue.html')) {
+        targetId = "nav-material-issue";
+        expandSection = "production";
+    } else if (path.includes('/core-winding.html')) {
+        targetId = "nav-core-winding";
+        expandSection = "production";
+    } else if (path.includes('/stacking.html')) {
+        targetId = "nav-stacking";
+        expandSection = "production";
+    } else if (path.includes('/assembly.html')) {
+        targetId = "nav-assembly";
+        expandSection = "production";
+    } else if (path.includes('/internal-qc.html')) {
+        targetId = "nav-internal-qc";
+        expandSection = "production";
+    } else if (path.includes('/ready-dispatch.html')) {
+        targetId = "nav-ready-dispatch";
+        expandSection = "production";
+    } else if (path.includes('/dispatch.html')) {
+        targetId = "nav-dispatch";
+        expandSection = "production";
+    } else if (path.includes('/reports.html')) {
+        targetId = "nav-reports";
+    } else if (path.includes('/customer-master.html')) {
+        targetId = "nav-customer-master";
+        expandSection = "masters";
+    } else if (path.includes('/product-master.html')) {
+        targetId = "nav-product-master";
+        expandSection = "masters";
+    } else if (path.includes('/employee-master.html')) {
+        targetId = "nav-employee-master";
+        expandSection = "masters";
+    } else if (path.includes('/settings.html')) {
+        targetId = "nav-settings";
+    }
 
     const link = document.getElementById(targetId);
     if (link) {
         link.classList.add('active');
+    }
+
+    // Auto-expand dynamic accordion active section parent matching link
+    if (expandSection) {
+        const content = document.getElementById(`accordion-${expandSection}`);
+        const header = document.getElementById(`header-${expandSection}`);
+        if (content && header) {
+            content.classList.add('open');
+            header.classList.add('open');
+        }
     }
 }
