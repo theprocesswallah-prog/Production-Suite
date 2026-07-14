@@ -1,116 +1,50 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Lucide Icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-
-    // 2. Setup Responsive Sidebar Toggle
-    injectResponsiveToggle();
-
-    // 3. Highlight active page in Sidebar
-    highlightActiveLink();
-
-    // 4. Setup Global Toast Container
-    createToastContainer();
-});
-
-// Sidebar active link detection based on current URL pathing
-function highlightActiveLink() {
-    const path = window.location.pathname;
-    const page = path.split('/').pop();
-    const links = document.querySelectorAll('.sidebar-link');
-
-    links.forEach(link => {
-        const href = link.getAttribute('href');
-        const linkPage = href.split('/').pop();
-        
-        if (page === linkPage || (page === '' && linkPage === 'index.html')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
+// Initialize Global LocalStorage State for UI Session
+if (!localStorage.getItem('pw_unit_selected')) {
+    localStorage.setItem('pw_unit_selected', 'HT'); // Default selected unit is High Tension
 }
 
-// Injects hamburger menu and binds interactive drawer state
-function injectResponsiveToggle() {
-    const header = document.querySelector('header');
-    if (!header) return;
-
-    // Insert hamburger before first-child of header
-    const hamburger = document.createElement('button');
-    hamburger.className = 'hamburger';
-    hamburger.innerHTML = '<i data-lucide="menu"></i>';
-    header.insertBefore(hamburger, header.firstChild);
-
-    const sidebar = document.querySelector('aside');
-
-    hamburger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sidebar.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-        if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target)) {
-            sidebar.classList.remove('open');
-        }
-    });
-
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-}
-
-// Interactive Toast Engine
-function createToastContainer() {
-    if (!document.querySelector('.toast-container')) {
-        const container = document.createElement('div');
-        container.className = 'toast-container';
+// Global Toast System Handler
+function triggerToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.style.cssText = "position: fixed; bottom: 24px; right: 24px; z-index: 10000; display: flex; flex-direction: column; gap: 8px;";
         document.body.appendChild(container);
     }
-}
-
-function showToast(message, type = 'success') {
-    const container = document.querySelector('.toast-container');
-    if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    
-    let icon = 'info';
-    if (type === 'success') icon = 'check-circle';
-    if (type === 'warning') icon = 'alert-triangle';
-    if (type === 'danger') icon = 'x-circle';
-
-    toast.innerHTML = `
-        <i data-lucide="${icon}"></i>
-        <span>${message}</span>
+    toast.style.cssText = `
+        background-color: #0f172a;
+        color: #ffffff;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: sans-serif;
+        font-size: 13.5px;
+        border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444'};
+        animation: toastIn 0.2s ease-out forwards;
     `;
 
+    toast.innerHTML = `<span>${message}</span>`;
     container.appendChild(toast);
-    
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
 
-    // Auto clean up toast
     setTimeout(() => {
-        toast.style.animation = 'slideIn 0.3s ease-out reverse';
-        setTimeout(() => toast.remove(), 300);
-    }, 4000);
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.2s';
+        setTimeout(() => toast.remove(), 200);
+    }, 3000);
 }
 
-// Modal handling actions
-function openModal(modalId) {
-    const overlay = document.getElementById(modalId);
-    if (overlay) {
-        overlay.classList.add('active');
+// Simple dynamic styling animation helper
+const styleSheet = document.createElement("style");
+styleSheet.innerText = `
+    @keyframes toastIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
-}
-
-function closeModal(modalId) {
-    const overlay = document.getElementById(modalId);
-    if (overlay) {
-        overlay.classList.remove('active');
-    }
-}
+`;
+document.head.appendChild(styleSheet);
