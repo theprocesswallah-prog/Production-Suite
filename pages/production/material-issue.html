@@ -1,1 +1,49 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcessWallah - Material Issue</title>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/production.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="light-workspace">
+    <div class="app-container">
+        <aside id="app-sidebar"></aside>
+        <div class="main-layout">
+            <header id="app-header"></header>
+            <main class="workspace-content">
+                <div class="workspace-header">
+                    <div class="breadcrumb">
+                        <a href="#">Production</a> / <span>Material Issue</span>
+                    </div>
+                    <div class="title-toolbar">
+                        <h1>Raw Component Requisition</h1>
+                    </div>
+                </div>
+                <div class="search-filter-bar">
+                    <div class="search-box">
+                        <i data-lucide="search"></i>
+                        <input type="text" placeholder="Search material requisition...">
+                    </div>
+                    <button class="btn btn-secondary" onclick="triggerToast('Inventory log export locked.', 'warning')">
+                        <i data-lucide="download"></i> Export Data
+                    </button>
+                </div>
+                <div class="empty-state-card">
+                    <div class="empty-state-icon"><i data-lucide="package-open"></i></div>
+                    <h3>Material Release Desk Idle</h3>
+                    <p>Copper winding wire, core structural elements steel sheets, and bushings stock allocation logs load in Sprint 3.</p>
+                </div>
+            </main>
+            <footer id="app-footer"></footer>
+        </div>
+    </div>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/router.js"></script>
+    <script src="../../js/layout.js"></script>
+    <script src="../../js/production.js"></script>
+</body>
+</html>
