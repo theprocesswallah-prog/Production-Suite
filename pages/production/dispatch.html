@@ -1,1 +1,49 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcessWallah - Final Dispatch</title>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/production.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="light-workspace">
+    <div class="app-container">
+        <aside id="app-sidebar"></aside>
+        <div class="main-layout">
+            <header id="app-header"></header>
+            <main class="workspace-content">
+                <div class="workspace-header">
+                    <div class="breadcrumb">
+                        <a href="#">Production</a> / <span>Final Dispatch</span>
+                    </div>
+                    <div class="title-toolbar">
+                        <h1>Gate Outward Shipping</h1>
+                    </div>
+                </div>
+                <div class="search-filter-bar">
+                    <div class="search-box">
+                        <i data-lucide="search"></i>
+                        <input type="text" placeholder="Search invoices...">
+                    </div>
+                    <button class="btn btn-secondary" onclick="triggerToast('Outward registers locked.', 'warning')">
+                        <i data-lucide="download"></i> Export Manifests
+                    </button>
+                </div>
+                <div class="empty-state-card">
+                    <div class="empty-state-icon"><i data-lucide="truck"></i></div>
+                    <h3>Outbound Shipping Desk Closed</h3>
+                    <p>Gate passes authorizations check vectors, customer handoff certificates, and invoicing logs deploy in Sprint 4.</p>
+                </div>
+            </main>
+            <footer id="app-footer"></footer>
+        </div>
+    </div>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/router.js"></script>
+    <script src="../../js/layout.js"></script>
+    <script src="../../js/production.js"></script>
+</body>
+</html>
