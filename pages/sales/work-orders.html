@@ -3,47 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProcessWallah - Work Orders</title>
-    <link rel="stylesheet" href="../../css/common.css">
-    <link rel="stylesheet" href="../../css/layout.css">
-    <link rel="stylesheet" href="../../css/sales.css">
+    <title>ALFA INTERCONTINENTAL - Work Orders</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/sales.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="light-workspace">
     <div class="app-container">
         <aside id="app-sidebar"></aside>
+
         <div class="main-layout">
             <header id="app-header"></header>
+
             <main class="workspace-content">
                 <div class="workspace-header">
                     <div class="breadcrumb">
-                        <a href="#">Sales</a> / <span>Work Orders</span>
+                        <a href="#">Sales Operations</a> / <span>Work Orders</span>
                     </div>
                     <div class="title-toolbar">
-                        <h1>Work Orders Queue</h1>
+                        <h1>Work Orders Generation</h1>
+                        <button class="btn btn-primary" onclick="triggerToast('Work order batch generator launches in Sprint 2', 'warning')">
+                            <i data-lucide="plus-circle"></i> Create Work Order
+                        </button>
                     </div>
                 </div>
+
                 <div class="search-filter-bar">
                     <div class="search-box">
                         <i data-lucide="search"></i>
-                        <input type="text" placeholder="Search WO identifiers...">
+                        <input type="text" placeholder="Search work order codes...">
                     </div>
-                    <button class="btn btn-secondary" onclick="triggerToast('WO export inactive.', 'warning')">
+                    <div class="filter-box">
+                        <select class="form-control">
+                            <option>All Operations</option>
+                            <option>Winding</option>
+                            <option>Stacking</option>
+                            <option>Assembly</option>
+                            <option>Testing</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="triggerToast('Generating CSV layout...', 'success')">
                         <i data-lucide="download"></i> Export Data
                     </button>
                 </div>
-                <div class="empty-state-card">
-                    <div class="empty-state-icon"><i data-lucide="clipboard-list"></i></div>
-                    <h3>No Active Work Orders Release</h3>
-                    <p>BOM verification, route sheet formatting, and job cards triggers release functionalities will go active in Sprint 2.</p>
+
+                <!-- Mock Table with actual detailed columns -->
+                <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow-x: auto; box-shadow: var(--shadow-sm);">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #f1f5f9; border-bottom: 2px solid var(--border-color);">
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569;">WO Code</th>
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569;">Target SO ID</th>
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569;">Item Specification</th>
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569;">Batch Target</th>
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569;">WIP Route Stage</th>
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569;">Status Badge</th>
+                                <th style="padding: 12px 16px; font-weight: 700; color: #475569; text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary);">WO-88741</td>
+                                <td style="padding: 12px 16px;">SO-2026-904</td>
+                                <td style="padding: 12px 16px;">Transformer Core HV-2</td>
+                                <td style="padding: 12px 16px;">24 units</td>
+                                <td style="padding: 12px 16px;">Core Winding</td>
+                                <td style="padding: 12px 16px;"><span class="badge badge-running">In-Progress</span></td>
+                                <td style="padding: 12px 16px; text-align: right;">
+                                    <button class="btn btn-secondary" style="height: 28px; padding: 0 10px; font-size: 11px;" onclick="triggerToast('Details exported to clipboard.', 'success')">View Route</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </main>
+
             <footer id="app-footer"></footer>
         </div>
     </div>
-    <script src="../../js/common.js"></script>
-    <script src="../../js/router.js"></script>
-    <script src="../../js/layout.js"></script>
-    <script src="../../js/sales.js"></script>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/router.js"></script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/sales.js"></script>
 </body>
 </html>
