@@ -1,1 +1,49 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcessWallah - Reports</title>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/reports.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="light-workspace">
+    <div class="app-container">
+        <aside id="app-sidebar"></aside>
+        <div class="main-layout">
+            <header id="app-header"></header>
+            <main class="workspace-content">
+                <div class="workspace-header">
+                    <div class="breadcrumb">
+                        <a href="#">Home</a> / <span>Reports</span>
+                    </div>
+                    <div class="title-toolbar">
+                        <h1>Analytical Performance Reports</h1>
+                    </div>
+                </div>
+                <div class="search-filter-bar">
+                    <div class="search-box">
+                        <i data-lucide="search"></i>
+                        <input type="text" placeholder="Search custom log parameter...">
+                    </div>
+                    <button class="btn btn-secondary" onclick="triggerToast('PDF reports generation uninitialized.', 'warning')">
+                        <i data-lucide="download"></i> Download Audit Pack
+                    </button>
+                </div>
+                <div class="empty-state-card">
+                    <div class="empty-state-icon"><i data-lucide="bar-chart-3"></i></div>
+                    <h3>Performance Reports Offline</h3>
+                    <p>Analytical graphs integrations, equipment downtime pareto, and yields tracking dashboards activate in Sprint 5.</p>
+                </div>
+            </main>
+            <footer id="app-footer"></footer>
+        </div>
+    </div>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/router.js"></script>
+    <script src="../../js/layout.js"></script>
+    <script src="../../js/reports.js"></script>
+</body>
+</html>
