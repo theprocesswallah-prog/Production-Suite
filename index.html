@@ -3,20 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProcessWallah - Dashboard</title>
-    <!-- Direct link from root folder level -->
+    <title>ALFA INTERCONTINENTAL - Dashboard Summary</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Chart.js CDN for professional metrics representations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Embedded styling helper for Dashboard modules layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-data {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .kpi-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .kpi-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kpi-trend {
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 0.25rem;
+        }
+
+        /* Complex Section blocks layouts */
+        .dashboard-sections-wrap {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-sections-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        /* Activity Logs lists representation */
+        .activity-feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feed-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            font-size: 13px;
+        }
+
+        .feed-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            white-space: nowrap;
+            width: 50px;
+        }
+
+        .feed-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        /* Timeline and Order progress visual map */
+        .progress-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .pipeline-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .pipeline-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body class="light-workspace">
     <div class="app-container">
-        <!-- Sidebar injected dynamically by layout.js -->
+        <!-- Dynamic Sidebar injected here -->
         <aside id="app-sidebar"></aside>
 
         <div class="main-layout">
-            <!-- Header injected dynamically by layout.js -->
+            <!-- Dynamic Header with migrated profile card -->
             <header id="app-header"></header>
 
             <main class="workspace-content">
@@ -25,46 +182,213 @@
                         <a href="#">Home</a> / <span>Dashboard</span>
                     </div>
                     <div class="title-toolbar">
-                        <h1>Dashboard Summary</h1>
+                        <h1>Operations Telemetry</h1>
                     </div>
                 </div>
 
-                <div class="search-filter-bar">
-                    <div class="search-box">
-                        <i data-lucide="search"></i>
-                        <input type="text" placeholder="Search orders, materials or metrics...">
+                <!-- 6 Professional KPI Cards -->
+                <div class="dashboard-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-data">
+                            <span class="kpi-title">Total Active Orders</span>
+                            <span class="kpi-value">48</span>
+                            <span class="kpi-trend" style="color: var(--success);"><i data-lucide="trending-up"></i> +4.2%</span>
+                        </div>
+                        <div class="kpi-icon-box" style="background-color: var(--primary-light); color: var(--primary-hover);">
+                            <i data-lucide="shopping-bag"></i>
+                        </div>
                     </div>
-                    <div class="filter-box">
-                        <select class="form-control">
-                            <option>All Shifts</option>
-                            <option>Shift A</option>
-                            <option>Shift B</option>
-                        </select>
+
+                    <div class="kpi-card">
+                        <div class="kpi-data">
+                            <span class="kpi-title">Running Batches</span>
+                            <span class="kpi-value">12</span>
+                            <span class="kpi-trend" style="color: var(--info);"><i data-lucide="activity"></i> On Target</span>
+                        </div>
+                        <div class="kpi-icon-box" style="background-color: #e0f2fe; color: #0284c7;">
+                            <i data-lucide="refresh-cw"></i>
+                        </div>
                     </div>
-                    <button class="btn btn-secondary" onclick="triggerToast('Loading shift excel dataset...', 'info')">
-                        <i data-lucide="download"></i> Export Reports
-                    </button>
+
+                    <div class="kpi-card">
+                        <div class="kpi-data">
+                            <span class="kpi-title">Blocked Orders</span>
+                            <span class="kpi-value" style="color: var(--danger);">3</span>
+                            <span class="kpi-trend" style="color: var(--danger);"><i data-lucide="alert-triangle"></i> Needs Action</span>
+                        </div>
+                        <div class="kpi-icon-box" style="background-color: #fee2e2; color: #dc2626;">
+                            <i data-lucide="octagon-alert"></i>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-data">
+                            <span class="kpi-title">WIP Volume</span>
+                            <span class="kpi-value">2,840 kg</span>
+                            <span class="kpi-trend" style="color: var(--warning);"><i data-lucide="clock"></i> Processing</span>
+                        </div>
+                        <div class="kpi-icon-box" style="background-color: #fef3c7; color: #d97706;">
+                            <i data-lucide="hourglass"></i>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-data">
+                            <span class="kpi-title">Ready Dispatch</span>
+                            <span class="kpi-value">410 units</span>
+                            <span class="kpi-trend" style="color: var(--success);"><i data-lucide="check-circle-2"></i> Quality OK</span>
+                        </div>
+                        <div class="kpi-icon-box" style="background-color: #d1fae5; color: #059669;">
+                            <i data-lucide="package-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-data">
+                            <span class="kpi-title">Dispatched Today</span>
+                            <span class="kpi-value">85 units</span>
+                            <span class="kpi-trend" style="color: var(--success);"><i data-lucide="check"></i> Met Target</span>
+                        </div>
+                        <div class="kpi-icon-box" style="background-color: #f1f5f9; color: #475569;">
+                            <i data-lucide="truck"></i>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Empty state placeholder -->
-                <div class="empty-state-card">
-                    <div class="empty-state-icon">
-                        <i data-lucide="gauge"></i>
+                <!-- Main dashboard sections -->
+                <div class="dashboard-sections-wrap">
+                    <!-- Section A: Production Summary & Progress Timeline -->
+                    <div class="panel-card">
+                        <div class="panel-title">
+                            <i data-lucide="factory" style="color: var(--primary);"></i> Current Shift Output Summary
+                        </div>
+                        <div style="height: 240px; position: relative; margin-bottom: 2rem;">
+                            <canvas id="outputYieldChart"></canvas>
+                        </div>
+
+                        <div class="panel-title" style="border: none; margin-bottom: 0.75rem; padding-bottom: 0;">
+                            <i data-lucide="list-checks" style="color: var(--info);"></i> Active Batch Progress Timeline
+                        </div>
+                        <div class="progress-pipeline">
+                            <div class="pipeline-row">
+                                <div class="pipeline-info">
+                                    <span>Batch #HT-1029 [Core Winding Phase]</span>
+                                    <span>85% Completed</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="pipeline-row">
+                                <div class="pipeline-info">
+                                    <span>Batch #LT-4421 [Core Stacking Assembly]</span>
+                                    <span>40% Completed</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 40%; background-color: var(--warning);"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Dashboard Indicators Awaiting Sprints</h3>
-                    <p>Metrics panels, production outputs indices, OEE gauges require active Work Orders and Production logs from upcoming sprints.</p>
+
+                    <!-- Section B: Recent activity lists feed & Order Status -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="panel-card">
+                            <div class="panel-title">
+                                <i data-lucide="list-todo" style="color: var(--warning);"></i> Recent Floor Activities
+                            </div>
+                            <div class="activity-feed-list">
+                                <div class="feed-item">
+                                    <span class="feed-time">14:02 PM</span>
+                                    <span class="feed-dot" style="background-color: var(--success);"></span>
+                                    <span>QA Passed for Transformer HT-229. Unit dispatched to Yard.</span>
+                                </div>
+                                <div class="feed-item">
+                                    <span class="feed-time">13:15 PM</span>
+                                    <span class="feed-dot" style="background-color: var(--danger);"></span>
+                                    <span>Winding Machine CNC-02 raised Concern: Raw copper wire snapping. Status marked Blocked.</span>
+                                </div>
+                                <div class="feed-item">
+                                    <span class="feed-time">11:40 AM</span>
+                                    <span class="feed-dot" style="background-color: var(--info);"></span>
+                                    <span>Batch #LT-891 materials issued and allocated.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-card">
+                            <div class="panel-title">
+                                <i data-lucide="pie-chart" style="color: var(--info);"></i> Overall Quality Yield
+                            </div>
+                            <div style="height: 150px; position: relative;">
+                                <canvas id="qualityYieldChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
 
-            <!-- Footer injected dynamically by layout.js -->
+            <!-- Dynamic Footer injected here -->
             <footer id="app-footer"></footer>
         </div>
     </div>
 
-    <!-- Core assets mapped directly from root -->
     <script src="js/common.js"></script>
     <script src="js/router.js"></script>
     <script src="js/layout.js"></script>
     <script src="js/dashboard.js"></script>
+    <script>
+        // Production Yield Data Analytics Chart (Line Graph representation)
+        const yieldCtx = document.getElementById('outputYieldChart').getContext('2d');
+        new Chart(yieldCtx, {
+            type: 'line',
+            data: {
+                labels: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
+                datasets: [{
+                    label: 'Actual Output Yield (Units)',
+                    data: [15, 38, 55, 85, 110, 120],
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.05)',
+                    fill: true,
+                    tension: 0.25,
+                    borderWidth: 2.5
+                }, {
+                    label: 'Target Yield Target (Units)',
+                    data: [20, 40, 60, 80, 100, 120],
+                    borderColor: '#94a3b8',
+                    borderDash: [4, 4],
+                    fill: false,
+                    tension: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 11 } } } },
+                scales: {
+                    y: { grid: { color: '#f1f5f9' }, ticks: { font: { family: 'Inter', size: 10 } } },
+                    x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } }
+                }
+            }
+        });
+
+        // Quality Yield Donut Representation
+        const qcCtx = document.getElementById('qualityYieldChart').getContext('2d');
+        new Chart(qcCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Passed QC', 'Rework Stack', 'Logged Scrap'],
+                datasets: [{
+                    data: [94.5, 4.2, 1.3],
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { family: 'Inter', size: 11 } } } }
+            }
+        });
+    </script>
 </body>
 </html>
