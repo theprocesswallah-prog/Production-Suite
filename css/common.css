@@ -4,23 +4,28 @@
     --primary: #f97316;
     --primary-hover: #ea580c;
     --primary-light: #ffedd5;
-    --bg-sidebar: #0f172a;
+    --bg-sidebar: #0b0f19; /* Sleek rich dark slate */
     --bg-workspace: #f8fafc;
     --bg-card: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
+    --text-main: #0f172a; /* Raised contrast */
+    --text-muted: #475569; /* Raised contrast (Non-faded) */
     --text-sidebar: #94a3b8;
     --border-color: #e2e8f0;
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
     --info: #06b6d4;
-    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
     --sidebar-width: 260px;
     --header-height: 70px;
-    --border-radius: 8px;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    
+    /* Strict Radius Override */
+    --card-radius: 18px;
+    --button-radius: 10px;
+    
+    /* Stripe/Linear Inspired Softer Premium Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.01), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.01), 0 12px 24px -4px rgba(15, 23, 42, 0.04);
 }
 
 * {
@@ -35,9 +40,10 @@ body {
     color: var(--text-main);
     overflow-x: hidden;
     font-size: 14px;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* UI Components: Buttons */
+/* UI Components: High Contrast Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -45,11 +51,11 @@ body {
     gap: 0.5rem;
     height: 38px;
     padding: 0 16px;
-    border-radius: var(--border-radius);
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: var(--button-radius);
+    font-size: 13.5px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s ease-in-out;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     border: 1px solid transparent;
     text-decoration: none;
     outline: none;
@@ -67,16 +73,19 @@ body {
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
     background-color: white;
     border-color: var(--border-color);
-    color: #334155;
+    color: var(--text-main);
 }
 
 .btn-secondary:hover {
     background-color: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
 }
 
 .btn-danger {
@@ -86,50 +95,54 @@ body {
 
 .btn-danger:hover {
     background-color: #dc2626;
+    transform: translateY(-1px);
 }
 
-/* Input Fields */
+/* Form Controls and Selection panels */
 .form-control {
     height: 38px;
     padding: 0 12px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--button-radius);
     outline: none;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13.5px;
     background-color: white;
-    transition: border-color 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s;
     width: 100%;
+    color: var(--text-main);
 }
 
 .form-control:focus {
     border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
 }
 
-/* Status Badges */
+/* Dynamic Status Badges (Stripe Design System) */
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 9999px; /* Pill shaped for SaaS layout */
+    font-size: 11px;
     font-weight: 600;
+    letter-spacing: 0.25px;
 }
 
-.badge-running { background-color: #d1fae5; color: #065f46; }
-.badge-pending { background-color: #fef3c7; color: #92400e; }
-.badge-blocked { background-color: #fee2e2; color: #991b1b; }
-.badge-completed { background-color: #d1fae5; color: #065f46; }
+.badge-running { background-color: #d1fae5; color: #047857; }
+.badge-pending { background-color: #fef3c7; color: #b45309; }
+.badge-blocked { background-color: #fee2e2; color: #b91c1c; }
+.badge-completed { background-color: #d1fae5; color: #047857; }
 .badge-ready { background-color: #e0f2fe; color: #0369a1; }
 .badge-delayed { background-color: #ffedd5; color: #c2410c; }
 .badge-cancelled { background-color: #f1f5f9; color: #475569; }
 
-/* Empty State Card */
+/* Empty State Card layout */
 .empty-state-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--card-radius);
     padding: 4rem 2rem;
     text-align: center;
     box-shadow: var(--shadow-sm);
