@@ -1,1 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcessWallah - Work Orders</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
 
+    <!-- Unified Dark Sidebar -->
+    <aside>
+        <div class="sidebar-brand">
+            <i class="logo-icon" data-lucide="cog"></i>
+            <span>ProcessWallah</span>
+            <span class="suite-v">V1</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="../index.html" class="sidebar-link"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+            <a href="sales-orders.html" class="sidebar-link"><i data-lucide="shopping-cart"></i>Sales Orders</a>
+            <a href="scheduling.html" class="sidebar-link"><i data-lucide="calendar"></i>Scheduling</a>
+            <a href="work-orders.html" class="sidebar-link active"><i data-lucide="clipboard-list"></i>Work Orders</a>
+            <a href="production.html" class="sidebar-link"><i data-lucide="activity"></i>Production Floor</a>
+            <a href="reports.html" class="sidebar-link"><i data-lucide="bar-chart-2"></i>Reports</a>
+            <a href="masters.html" class="sidebar-link"><i data-lucide="database"></i>Masters</a>
+            <a href="settings.html" class="sidebar-link"><i data-lucide="settings"></i>Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">PW</div>
+                <div class="user-info">
+                    <span class="user-name">Alex Miller</span>
+                    <span class="user-role">Operations Manager</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search orders, materials or metrics...">
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="showToast('Production metrics live update active', 'success')"><i data-lucide="radio" style="color:var(--success)"></i></button>
+            </div>
+        </header>
+
+        <div class="workspace-content">
+            <div class="page-title-block">
+                <div>
+                    <h1>Work Orders</h1>
+                    <p>Track production jobs, routing steps, and live progress indicators</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal('addWoModal')">
+                    <i data-lucide="plus"></i> New Work Order
+                </button>
+            </div>
+
+            <!-- Board View or Queue View Tabs -->
+            <div class="card">
+                <div class="filter-bar">
+                    <div class="filters-left">
+                        <select class="form-control" onchange="showToast('Filtered items!', 'info')">
+                            <option>All Operations</option>
+                            <option>Awaiting Materials</option>
+                            <option>In Progress</option>
+                            <option>QA Pending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>WO Code</th>
+                                <th>Associated SO</th>
+                                <th>Item Specification</th>
+                                <th>Batch Route Target</th>
+                                <th>Progress Tracker</th>
+                                <th>Current Status</th>
+                                <th style="text-align: right;">Floor Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 700;">WO-88741</td>
+                                <td>SO-2026-001</td>
+                                <td>Alloy Valve Pistons</td>
+                                <td>1,200 total / Shift A</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; width: 150px;">
+                                        <div style="flex:1; height: 6px; background: #e2e8f0; border-radius:3px; overflow:hidden;">
+                                            <div style="width: 75%; height:100%; background:var(--primary);"></div>
+                                        </div>
+                                        <span style="font-size:0.75rem; font-weight:600;">75%</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-info">In Progress</span></td>
+                                <td style="text-align: right;">
+                                    <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="showToast('Details exported to clipboard.', 'info')">View Route</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="font-weight: 700;">WO-88742</td>
+                                <td>SO-2026-002</td>
+                                <td>Carbon Seal Rings</td>
+                                <td>350 total / Shift B</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; width: 150px;">
+                                        <div style="flex:1; height: 6px; background: #e2e8f0; border-radius:3px; overflow:hidden;">
+                                            <div style="width: 15%; height:100%; background:var(--warning);"></div>
+                                        </div>
+                                        <span style="font-size:0.75rem; font-weight:600;">15%</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-warning">Awaiting Materials</span></td>
+                                <td style="text-align: right;">
+                                    <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="showToast('Releasing purchase request for Raw Carbon Block T5', 'info')">Requisition Material</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="font-weight: 700;">WO-88743</td>
+                                <td>SO-2026-003</td>
+                                <td>Pressure Shaft Brackets</td>
+                                <td>90 total / QA Lab</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; width: 150px;">
+                                        <div style="flex:1; height: 6px; background: #e2e8f0; border-radius:3px; overflow:hidden;">
+                                            <div style="width: 100%; height:100%; background:var(--success);"></div>
+                                        </div>
+                                        <span style="font-size:0.75rem; font-weight:600;">100%</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">QA Complete</span></td>
+                                <td style="text-align: right;">
+                                    <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; background-color: var(--primary-light); color: var(--primary-hover);" onclick="showToast('Packaging checklist released!', 'success')">Complete Job</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dialog Modal: Create Work Order -->
+    <div class="modal-overlay" id="addWoModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">Generate Production Work Order</span>
+                <button class="action-btn" onclick="closeModal('addWoModal')"><i data-lucide="x"></i></button>
+            </div>
+            <form onsubmit="event.preventDefault(); closeModal('addWoModal'); showToast('Work Order Created and queued!', 'success');">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Associate with Active Sales Order</label>
+                        <select class="form-control" required>
+                            <option value="">SO-2026-001 [Apex Automotive Inc.]</option>
+                            <option value="">SO-2026-002 [Global Aviation Spares]</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Work Center Route</label>
+                        <select class="form-control" required>
+                            <option value="">Line-A CNC Lathe & Milling Complex</option>
+                            <option value="">Heavy Metal Casting Station B</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Operator Instructions / BOM Reference</label>
+                        <textarea class="form-control" style="width:100%; min-height: 80px;" placeholder="Verify wall thickness before releasing to QA lab..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addWoModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate & Release WO</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/common.js"></script>
+</body>
+</html>
