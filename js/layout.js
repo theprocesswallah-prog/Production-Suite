@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Path-depth mapping determine karna (Dynamic relative routing compatibility check)
+    // 1. Path-depth mapping auto-determination
     const prefix = getPathPrefix();
 
-    // 2. Inject Sidebar & Header
+    // 2. Inject Modular Shell Components
     injectSidebar(prefix);
     injectHeader();
     injectFooter();
@@ -16,21 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Resilient path-depth selector setup for local & GitHub Pages usage
 function getPathPrefix() {
     const path = window.location.pathname;
-    if (path.includes('/sales/') || path.includes('/production/') || path.includes('/masters/')) {
-        return '../../';
-    } else if (path.includes('/pages/')) {
-        return '../';
-    } else {
+    
+    // Agar path blank hai, index.html hai, ya root levels represent karta hai
+    if (path.endsWith('index.html') || path.endsWith('/') || path === '') {
         return '';
     }
+    // Agar page sibling modules directory (/sales/, /production/) ke andur hai
+    return '../';
 }
 
 function injectSidebar(prefix) {
     const sidebarContainer = document.getElementById('app-sidebar');
     if (!sidebarContainer) return;
 
+    // Direct redirection paths mapped using detected prefix
     sidebarContainer.innerHTML = `
         <div class="sidebar-brand">
             <i class="logo-icon" data-lucide="cog" style="animation: spin 10s linear infinite;"></i>
@@ -38,61 +40,61 @@ function injectSidebar(prefix) {
             <span class="suite-v">V1</span>
         </div>
         <nav class="sidebar-nav">
-            <a href="${prefix}pages/dashboard.html" class="sidebar-link" id="nav-dashboard">
+            <a href="${prefix}index.html" class="sidebar-link" id="nav-dashboard">
                 <i data-lucide="layout-dashboard"></i>Dashboard
             </a>
             
             <div class="nav-label">Sales Operations</div>
-            <a href="${prefix}pages/sales/sales-orders.html" class="sidebar-link" id="nav-sales-orders">
+            <a href="${prefix}sales/sales-orders.html" class="sidebar-link" id="nav-sales-orders">
                 <i data-lucide="shopping-cart"></i>Sales Orders
             </a>
-            <a href="${prefix}pages/sales/scheduling.html" class="sidebar-link" id="nav-scheduling">
+            <a href="${prefix}sales/scheduling.html" class="sidebar-link" id="nav-scheduling">
                 <i data-lucide="calendar"></i>Scheduling
             </a>
-            <a href="${prefix}pages/sales/work-orders.html" class="sidebar-link" id="nav-work-orders">
+            <a href="${prefix}sales/work-orders.html" class="sidebar-link" id="nav-work-orders">
                 <i data-lucide="clipboard-list"></i>Work Orders
             </a>
 
             <div class="nav-label">Manufacturing WIP</div>
-            <a href="${prefix}pages/production/wip.html" class="sidebar-link" id="nav-wip">
+            <a href="${prefix}production/wip.html" class="sidebar-link" id="nav-wip">
                 <i data-lucide="play-circle"></i>Work In Progress
             </a>
-            <a href="${prefix}pages/production/material-issue.html" class="sidebar-link" id="nav-material-issue">
+            <a href="${prefix}production/material-issue.html" class="sidebar-link" id="nav-material-issue">
                 <i data-lucide="package-open"></i>Material Issue
             </a>
-            <a href="${prefix}pages/production/core-winding.html" class="sidebar-link" id="nav-core-winding">
+            <a href="${prefix}production/core-winding.html" class="sidebar-link" id="nav-core-winding">
                 <i data-lucide="rotate-cw"></i>Core Winding
             </a>
-            <a href="${prefix}pages/production/stacking.html" class="sidebar-link" id="nav-stacking">
+            <a href="${prefix}production/stacking.html" class="sidebar-link" id="nav-stacking">
                 <i data-lucide="layers"></i>Core Stacking
             </a>
-            <a href="${prefix}pages/production/assembly.html" class="sidebar-link" id="nav-assembly">
+            <a href="${prefix}production/assembly.html" class="sidebar-link" id="nav-assembly">
                 <i data-lucide="cpu"></i>Assembly Unit
             </a>
-            <a href="${prefix}pages/production/internal-qc.html" class="sidebar-link" id="nav-internal-qc">
+            <a href="${prefix}production/internal-qc.html" class="sidebar-link" id="nav-internal-qc">
                 <i data-lucide="shield-check"></i>Internal QC
             </a>
-            <a href="${prefix}pages/production/ready-dispatch.html" class="sidebar-link" id="nav-ready-dispatch">
+            <a href="${prefix}production/ready-dispatch.html" class="sidebar-link" id="nav-ready-dispatch">
                 <i data-lucide="warehouse"></i>Ready Dispatch
             </a>
-            <a href="${prefix}pages/production/dispatch.html" class="sidebar-link" id="nav-dispatch">
+            <a href="${prefix}production/dispatch.html" class="sidebar-link" id="nav-dispatch">
                 <i data-lucide="truck"></i>Final Dispatch
             </a>
 
             <div class="nav-label">Analytics & Setup</div>
-            <a href="${prefix}pages/reports/reports.html" class="sidebar-link" id="nav-reports">
+            <a href="${prefix}reports/reports.html" class="sidebar-link" id="nav-reports">
                 <i data-lucide="bar-chart-3"></i>Reports
             </a>
-            <a href="${prefix}pages/masters/customer-master.html" class="sidebar-link" id="nav-customer-master">
+            <a href="${prefix}masters/customer-master.html" class="sidebar-link" id="nav-customer-master">
                 <i data-lucide="users"></i>Customer Master
             </a>
-            <a href="${prefix}pages/masters/product-master.html" class="sidebar-link" id="nav-product-master">
+            <a href="${prefix}masters/product-master.html" class="sidebar-link" id="nav-product-master">
                 <i data-lucide="database"></i>Product Master
             </a>
-            <a href="${prefix}pages/masters/employee-master.html" class="sidebar-link" id="nav-employee-master">
+            <a href="${prefix}masters/employee-master.html" class="sidebar-link" id="nav-employee-master">
                 <i data-lucide="user-cog"></i>Employee Master
             </a>
-            <a href="${prefix}pages/settings/settings.html" class="sidebar-link" id="nav-settings">
+            <a href="${prefix}settings/settings.html" class="sidebar-link" id="nav-settings">
                 <i data-lucide="settings"></i>Settings
             </a>
         </nav>
@@ -133,7 +135,7 @@ function injectHeader() {
         </div>
     `;
 
-    // Bind responsive toggles
+    // Responsive toggle bindings
     const burger = document.getElementById('nav-hamburger');
     const sidebar = document.getElementById('app-sidebar');
     if (burger && sidebar) {
@@ -153,7 +155,7 @@ function injectFooter() {
     const footerContainer = document.getElementById('app-footer');
     if (footerContainer) {
         footerContainer.innerHTML = `
-            <span>&copy; 2026 ProcessWallah MES Suite V1 • Pure Modular Architecture</span>
+            <span>&copy; 2026 ProcessWallah MES Suite V1 • Sibling Depth Normalization Patched</span>
         `;
     }
 }
@@ -192,10 +194,3 @@ function highlightActiveSidebar(prefix) {
         link.classList.add('active');
     }
 }
-
-// Add simple style block dynamically for spin animations
-const spinStyle = document.createElement("style");
-spinStyle.innerText = `
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-`;
-document.head.appendChild(spinStyle);
