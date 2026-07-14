@@ -1,1 +1,327 @@
+/* Layout container system */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+}
 
+/* Master Sidebar (Dark Theme) */
+aside {
+    width: var(--sidebar-width);
+    background-color: var(--bg-sidebar);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    border-right: 1px solid #1e293b;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-brand {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #1e293b;
+}
+
+.sidebar-brand .logo-icon {
+    color: var(--primary);
+}
+
+.sidebar-brand .suite-v {
+    font-size: 11px;
+    background: #1e293b;
+    color: var(--primary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    overflow-y: auto;
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #475569;
+    padding: 0.75rem 0.75rem 0.25rem;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    color: var(--text-sidebar);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+.sidebar-link:hover {
+    background-color: #1e293b;
+    color: #ffffff;
+}
+
+.sidebar-link.active {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #1e293b;
+    background-color: #0b0f19;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.user-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+.user-role {
+    font-size: 10px;
+    color: var(--text-sidebar);
+}
+
+/* Main Workspace Frame */
+.main-layout {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 0; /* Prevents flexbox items overflow */
+}
+
+/* Master Header */
+header {
+    height: var(--header-height);
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.unit-selector {
+    display: flex;
+    background-color: #f1f5f9;
+    padding: 3px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.unit-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.1s;
+    color: var(--text-muted);
+}
+
+.unit-btn.active {
+    background-color: white;
+    color: var(--text-main);
+    box-shadow: var(--shadow-sm);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 50%;
+}
+
+.action-btn:hover {
+    background-color: #f1f5f9;
+}
+
+.action-btn .badge-count {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: var(--danger);
+    color: white;
+    font-size: 9px;
+    padding: 2px 4px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+/* Main Content Workspace */
+.workspace-content {
+    padding: 2rem;
+    flex: 1;
+}
+
+.workspace-header {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: var(--text-muted);
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.title-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-toolbar h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Master Filters / Search Common Panel */
+.search-filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    background-color: var(--bg-card);
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #f1f5f9;
+    padding: 0 12px;
+    border-radius: var(--border-radius);
+    width: 300px;
+    height: 38px;
+    border: 1px solid var(--border-color);
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13.5px;
+    width: 100%;
+}
+
+.filter-box select {
+    min-width: 160px;
+}
+
+/* Master Footer */
+footer {
+    padding: 1rem 2rem;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Mobile responsive hamburger toggle */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    aside {
+        transform: translateX(-100%);
+    }
+    aside.open {
+        transform: translateX(0);
+    }
+    .main-layout {
+        margin-left: 0;
+    }
+    .hamburger {
+        display: block;
+    }
+}
