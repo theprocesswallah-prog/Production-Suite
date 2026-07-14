@@ -1,1 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcessWallah - Reports</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
 
+    <!-- Unified Dark Sidebar -->
+    <aside>
+        <div class="sidebar-brand">
+            <i class="logo-icon" data-lucide="cog"></i>
+            <span>ProcessWallah</span>
+            <span class="suite-v">V1</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="../index.html" class="sidebar-link"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+            <a href="sales-orders.html" class="sidebar-link"><i data-lucide="shopping-cart"></i>Sales Orders</a>
+            <a href="scheduling.html" class="sidebar-link"><i data-lucide="calendar"></i>Scheduling</a>
+            <a href="work-orders.html" class="sidebar-link"><i data-lucide="clipboard-list"></i>Work Orders</a>
+            <a href="production.html" class="sidebar-link"><i data-lucide="activity"></i>Production Floor</a>
+            <a href="reports.html" class="sidebar-link active"><i data-lucide="bar-chart-2"></i>Reports</a>
+            <a href="masters.html" class="sidebar-link"><i data-lucide="database"></i>Masters</a>
+            <a href="settings.html" class="sidebar-link"><i data-lucide="settings"></i>Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">PW</div>
+                <div class="user-info">
+                    <span class="user-name">Alex Miller</span>
+                    <span class="user-role">Operations Manager</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search orders, materials or metrics...">
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="showToast('Reports generated and archived!', 'success')"><i data-lucide="download"></i> Export Data Pack</button>
+            </div>
+        </header>
+
+        <div class="workspace-content">
+            <div class="page-title-block">
+                <div>
+                    <h1>OEE & Performance Reports</h1>
+                    <p>Audit historical line metrics, tooling lifespans, and throughput analyses</p>
+                </div>
+                <div style="display: flex; gap:0.5rem;">
+                    <select class="form-control">
+                        <option>Current Week</option>
+                        <option>Last 30 Days</option>
+                        <option>Last Quarter</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dashboard Analytics Breakdown Charts -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                <div class="card">
+                    <div class="card-title"><i data-lucide="alert-triangle"></i> Downtime Reason Pareto Index</div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="downtimeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i data-lucide="shield-alert"></i> Scrap & Defect Analytics (Daily)</div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="scrapTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i data-lucide="award"></i> Machine Quality Indexes</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Machine Asset ID</th>
+                                <th>Expected Yield</th>
+                                <th>Actual Yield</th>
+                                <th>Scrap Factor</th>
+                                <th>Equipment Quality Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>CNC-Lathe 01</strong></td>
+                                <td>5,000 units</td>
+                                <td>4,940 units</td>
+                                <td>60 units (1.2%)</td>
+                                <td><span class="badge badge-success" style="font-size:0.8rem;">98.8% Quality Index</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Milling Station</strong></td>
+                                <td>2,500 units</td>
+                                <td>2,410 units</td>
+                                <td>90 units (3.6%)</td>
+                                <td><span class="badge badge-warning" style="font-size:0.8rem;">96.4% Quality Index</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Casting Line A</strong></td>
+                                <td>1,200 units</td>
+                                <td>1,120 units</td>
+                                <td>80 units (6.6%)</td>
+                                <td><span class="badge badge-danger" style="font-size:0.8rem;">93.3% Quality Index</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script>
+        // Pareto Chart Simulation
+        const ctxDowntime = document.getElementById('downtimeChart').getContext('2d');
+        new Chart(ctxDowntime, {
+            type: 'bar',
+            data: {
+                labels: ['Tooling Change', 'Calibration', 'Material Outage', 'Unscheduled Repair', 'Clean & Cool'],
+                datasets: [{
+                    label: 'Minutes Lost',
+                    data: [120, 95, 80, 45, 30],
+                    backgroundColor: '#ea580c',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Scrap Chart Simulation
+        const ctxScrap = document.getElementById('scrapTrendChart').getContext('2d');
+        new Chart(ctxScrap, {
+            type: 'doughnut',
+            data: {
+                labels: ['Thermal Warping', 'Dimensional Error', 'Tooling Gouges', 'Raw Material Porosity'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'right' } }
+            }
+        });
+    </script>
+</body>
+</html>
